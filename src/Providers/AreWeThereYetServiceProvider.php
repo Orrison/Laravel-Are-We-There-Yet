@@ -14,7 +14,6 @@ class AreWeThereYetServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app['router']->middleware(\Orrison\AreWeThereYet\Middleware\TaskedMiddleware::class);
-        $this->app['router']->aliasMiddleware('awty.tasked', \Orrison\AreWeThereYet\Middleware\TaskedMiddleware::class);
     }
 
     /**
