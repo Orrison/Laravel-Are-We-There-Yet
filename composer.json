@@ -1,0 +1,24 @@
+{
+    "name": "orrison/laravel-are-we-there-yet",
+    "description": "Track related jobs and fire a closure when they have all completed",
+    "type": "composer-plugin",
+    "authors": [
+        {
+            "name": "Kevin Ullyott",
+            "email": "ullyott.kevin@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Orrison\\AreWeThereYet\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Orrison\\AreWeThereYet\\Providers\\AreWeThereYetServiceProvider"
+            ]
+        }
+    }
+}
