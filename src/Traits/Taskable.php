@@ -20,7 +20,7 @@ trait Taskable
 
     public function middleware()
     {
-        return [new Tasked()];
+        return [new TaskedMiddleware()];
     }
 
     public static function dispatchAsTask($goalId, $args)
