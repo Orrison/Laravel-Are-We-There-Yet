@@ -3,6 +3,7 @@
 namespace Orrison\AreWeThereYet\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Orrison\AreWeThereYet\Providers\EventsServiceProvider;
 
 class AreWeThereYetServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,7 @@ class AreWeThereYetServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app['router']->middleware(\Orrison\AreWeThereYet\Middleware\TaskedMiddleware::class);
+        $this->app->register(EventsServiceProvider::class);
     }
 
     /**
