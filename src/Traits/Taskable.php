@@ -25,6 +25,8 @@ trait Taskable
 
     public static function dispatchAsTask($goalId, $args)
     {
+        // TODO: Create a goal if it does not already exist
+
         $taskedJob = TaskedJob::create([
             'goal_id' => $goalId,
             'task_name' => class_basename(static::class),

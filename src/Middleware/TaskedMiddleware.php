@@ -23,6 +23,7 @@ class TaskedMiddleware
                 // the taskedJob has been completed.
                 if ($response) {
                     $job->taskedJob->markAsFinished($response);
+                    // TODO: Fire Goal check Event
                 }
             } catch (\Throwable $e) {
                 $job->fail($e);
