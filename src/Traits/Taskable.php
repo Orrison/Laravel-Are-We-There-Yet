@@ -6,6 +6,7 @@ use Orrison\AreWeThereYet\Middleware\TaskedMiddleware;
 use Orrison\AreWeThereYet\TaskedJob;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Queue\MaxAttemptsExceededException;
+use Orrison\AreWeThereYet\Goal;
 
 trait Taskable
 {
@@ -26,6 +27,10 @@ trait Taskable
     public static function dispatchAsTask($goalId, $args)
     {
         // TODO: Create a goal if it does not already exist
+        Goal::firstOrCreate(
+            ['goal_id' => $goalId],
+            ['completed' => false],
+        );
 
         $taskedJob = TaskedJob::create([
             'goal_id' => $goalId,
