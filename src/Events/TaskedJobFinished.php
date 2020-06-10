@@ -4,21 +4,22 @@ namespace Orrison\AreWeThereYet\Events;
 
 use App\Order;
 use Illuminate\Queue\SerializesModels;
+use Orrison\AreWeThereYet\TaskedJob;
 
 class TaskedJobFinished
 {
     use SerializesModels;
 
-    public $order;
+    public $taskedJob;
 
     /**
      * Create a new event instance.
      *
-     * @param  \App\Order  $order
+     * @param  \App\Order  $taskedJob
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct(TaskedJob $taskedJob)
     {
-        $this->order = $order;
+        $this->taskedJob = $taskedJob;
     }
 }

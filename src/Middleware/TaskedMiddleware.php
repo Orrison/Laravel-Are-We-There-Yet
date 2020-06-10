@@ -2,6 +2,8 @@
 
 namespace Orrison\AreWeThereYet\Middleware;
 
+use Orrison\AreWeThereYet\Events\TaskedJobFinished;
+
 class TaskedMiddleware
 {
     /**
@@ -23,7 +25,7 @@ class TaskedMiddleware
                 // the taskedJob has been completed.
                 if ($response) {
                     $job->taskedJob->markAsFinished($response);
-                    // TODO: Fire Goal check Event
+                    event(new TaskedJobFinished($job->taskedJob));
                 }
             } catch (\Throwable $e) {
                 $job->fail($e);
