@@ -2,6 +2,8 @@
 
 namespace Orrison\AreWeThereYet\Middleware;
 
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Orrison\AreWeThereYet\Events\TaskedJobFinished;
 
 class TaskedMiddleware
@@ -15,17 +17,28 @@ class TaskedMiddleware
      */
     public function handle($job, $next)
     {
-        if (isset($job->taskedJob) && !empty($job->taskedJob)) {
-            $job->taskedJob->markAsStarted();
-
+        if (isset($job->trackingId) && !empty($job->trackingId) && isset($job->goalId) && !empty($job->goalId)) {
             try {
                 $response = $next($job);
 
                 // If the response is truthy, then we can assume
                 // the taskedJob has been completed.
                 if ($response) {
-                    $job->taskedJob->markAsFinished($response);
-                    event(new TaskedJobFinished($job->taskedJob));
+                    $goalObject = Cache::tags(['awty'])->get($job->goalId);
+
+                    $pos = array_search($job->trackingId, $goalObject['tasks']);
+                    if ($pos) {
+                        unset($goalObject['tasks'][$pos]);
+                    } else {
+                        // Probably log this
+                    }
+
+                    if (empty($goalObject['tasks'])) {
+                        $goalObject['completionJob']::dispatch(...$goalObject['completionJobArgs']);
+                        Cache::tags(['awty'])->forget($job->goalId);
+                    } else {
+                        Cache::tags(['awty'])->put($job->goalId, $goalObject);
+                    }
                 }
             } catch (\Throwable $e) {
                 $job->fail($e);

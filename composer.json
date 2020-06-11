@@ -11,6 +11,9 @@
     ],
     "require": {},
     "autoload": {
+        "files": [
+            "src/Helpers.php"
+        ],
         "psr-4": {
             "Orrison\\AreWeThereYet\\": "src/"
         }
