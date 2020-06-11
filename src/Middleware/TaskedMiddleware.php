@@ -32,7 +32,7 @@ class TaskedMiddleware
 
                     $pos = array_search($job->trackingId, $goalObject['tasks']);
                     Log::info($pos);
-                    if ($pos) {
+                    if ($pos !== false) {
                         unset($goalObject['tasks'][$pos]);
                     } else {
                         // Probably log this
