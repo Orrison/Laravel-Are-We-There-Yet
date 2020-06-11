@@ -47,9 +47,9 @@ if (! function_exists('parallelDispatch')) {
                 $firstJob = $possibleJob[0];
                 array_shift($possibleJob);
                 $firstJob->chain($possibleJob);
-                $firstJob->dispatch();
+                dispatch($firstJob);
             } else {
-                $possibleJob->dispatch();
+                dispatch($possibleJob);
             }
         }
     }
