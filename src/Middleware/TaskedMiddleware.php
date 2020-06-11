@@ -18,21 +18,27 @@ class TaskedMiddleware
     public function handle($job, $next)
     {
         Log::info('In Middleware');
-        if (isset($job->trackingId) && !empty($job->trackingId) && isset($job->goalId) && !empty($job->goalId)) {
+        if (isset($job->trackingId) && isset($job->goalId)) {
             try {
                 $response = $next($job);
+
+                Log::info('vars are set');
 
                 // If the response is truthy, then we can assume
                 // the taskedJob has been completed.
                 if ($response) {
+                    Log::info('response was truthy');
                     $goalObject = Cache::tags(['awty'])->get($job->goalId);
 
                     $pos = array_search($job->trackingId, $goalObject['tasks']);
+                    Log::info($pos);
                     if ($pos) {
                         unset($goalObject['tasks'][$pos]);
                     } else {
                         // Probably log this
                     }
+
+                    Log::info(json_encode($goalObject['tasks']));
 
                     if (empty($goalObject['tasks'])) {
                         Log::info('No more tasks');
