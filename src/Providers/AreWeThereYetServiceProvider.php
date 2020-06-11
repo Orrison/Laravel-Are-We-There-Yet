@@ -13,7 +13,7 @@ class AreWeThereYetServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['router']->middleware(\Orrison\AreWeThereYet\Middleware\TaskedMiddleware::class);
+        $this->app['router']->middleware(\Orrison\AreWeThereYet\Middleware\TrackedMiddleware::class);
     }
 
     /**

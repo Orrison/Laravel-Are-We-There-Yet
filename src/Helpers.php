@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
-use Orrison\AreWeThereYet\Middleware\TaskedMiddleware;
+use Orrison\AreWeThereYet\Middleware\TrackedMiddleware;
 
 if (! function_exists('parallelDispatch')) {
     /**
@@ -27,9 +27,9 @@ if (! function_exists('parallelDispatch')) {
                     $jobList[$rootKey][$subKey]->goalId = $uniqueGoalKey;
                     
                     if (is_array($jobList[$rootKey][$subKey]->middleware)) {
-                        array_push($jobList[$rootKey][$subKey]->middleware, new TaskedMiddleware());
+                        array_push($jobList[$rootKey][$subKey]->middleware, new TrackedMiddleware());
                     } else {
-                        $jobList[$rootKey][$subKey]->middleware = [new TaskedMiddleware()];
+                        $jobList[$rootKey][$subKey]->middleware = [new TrackedMiddleware()];
                     }
                 }
             } else {
@@ -39,9 +39,9 @@ if (! function_exists('parallelDispatch')) {
                 $jobList[$rootKey]->goalId = $uniqueGoalKey;
 
                 if (is_array($jobList[$rootKey]->middleware)) {
-                    array_push($jobList[$rootKey]->middleware, new TaskedMiddleware());
+                    array_push($jobList[$rootKey]->middleware, new TrackedMiddleware());
                 } else {
-                    $jobList[$rootKey]->middleware = [new TaskedMiddleware()];
+                    $jobList[$rootKey]->middleware = [new TrackedMiddleware()];
                 }
             }
         }

@@ -2,7 +2,7 @@
 
 namespace Orrison\AreWeThereYet\Traits;
 
-use Orrison\AreWeThereYet\Middleware\TaskedMiddleware;
+use Orrison\AreWeThereYet\Middleware\TrackedMiddleware;
 use Orrison\AreWeThereYet\TaskedJob;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Queue\MaxAttemptsExceededException;

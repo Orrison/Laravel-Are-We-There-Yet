@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Orrison\AreWeThereYet\Events\TaskedJobFinished;
 
-class TaskedMiddleware
+class TrackedMiddleware
 {
     /**
      * Wrap the Trackable job with a try/catch and logic to ensure it is tracked.
