@@ -34,8 +34,6 @@ class TaskedMiddleware
                         // Probably log this
                     }
 
-                    Log::info(json_decode($goalObject['tasks']));
-
                     if (empty($goalObject['tasks'])) {
                         $goalObject['completionJob']::dispatch(...$goalObject['completionJobArgs']);
                         Cache::tags(['awty'])->forget($job->goalId);
