@@ -22,26 +22,19 @@ class TaskedMiddleware
             try {
                 $response = $next($job);
 
-                Log::info('vars are set');
-
                 // If the response is truthy, then we can assume
                 // the taskedJob has been completed.
                 if ($response) {
-                    Log::info('response was truthy');
                     $goalObject = Cache::tags(['awty'])->get($job->goalId);
 
                     $pos = array_search($job->trackingId, $goalObject['tasks']);
-                    Log::info($pos);
                     if ($pos !== false) {
                         unset($goalObject['tasks'][$pos]);
                     } else {
                         // Probably log this
                     }
 
-                    Log::info(json_encode($goalObject['tasks']));
-
                     if (empty($goalObject['tasks'])) {
-                        Log::info('No more tasks');
                         $goalObject['completionJob']::dispatch(...$goalObject['completionJobArgs']);
                         Cache::tags(['awty'])->forget($job->goalId);
                     } else {
