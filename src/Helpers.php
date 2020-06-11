@@ -5,6 +5,16 @@ use Illuminate\Support\Str;
 use Orrison\AreWeThereYet\Middleware\TaskedMiddleware;
 
 if (! function_exists('parallelDispatch')) {
+    /**
+     * parallelDispatch
+     *
+     * @param  mixed $jobList An array of job objects you would like dispatched and tracked.
+     * Adding a multidimensional array will dispatch the sub-array in a job chain in the order they are listed
+     * @param  string $uniqueGoalKey A unique key to track a particular goal instance
+     * @param  string $completionJob A namespaced path to the job you would like run once all tracked jobs complete
+     * @param  array $completionJobArgs The arguments in order to be passed to the $completionJob
+     * @return void
+     */
     function parallelDispatch($jobList, $uniqueGoalKey, $completionJob, $completionJobArgs)
     {
         $tasks = [];
