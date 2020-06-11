@@ -17,6 +17,7 @@ class TaskedMiddleware
      */
     public function handle($job, $next)
     {
+        Log::info('In Middleware');
         if (isset($job->trackingId) && !empty($job->trackingId) && isset($job->goalId) && !empty($job->goalId)) {
             try {
                 $response = $next($job);
@@ -34,6 +35,7 @@ class TaskedMiddleware
                     }
 
                     if (empty($goalObject['tasks'])) {
+                        Log::info('No more tasks');
                         $goalObject['completionJob']::dispatch(...$goalObject['completionJobArgs']);
                         Cache::tags(['awty'])->forget($job->goalId);
                     } else {
