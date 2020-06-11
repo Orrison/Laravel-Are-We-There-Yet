@@ -2,20 +2,17 @@
 
 namespace Orrison\AreWeThereYet\Traits;
 
-use Orrison\AreWeThereYet\Middleware\TrackedMiddleware;
-use Orrison\AreWeThereYet\TaskedJob;
-use Illuminate\Foundation\Bus\PendingDispatch;
-use Illuminate\Queue\MaxAttemptsExceededException;
-use Orrison\AreWeThereYet\Goal;
-
-trait Taskable
+trait Trackable
 {
     /**
-     * TaskedJob tied to this job.
+     * The unique trackingId for this job
      *
-     * @var \Orrison\AreWeThereYet\TaskedJob
      */
     public $trackingId = null;
 
+    /**
+     * The unique goal for related to this job
+     *
+     */
     public $goalId = null;
 }

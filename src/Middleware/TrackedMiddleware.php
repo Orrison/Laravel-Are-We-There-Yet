@@ -4,7 +4,6 @@ namespace Orrison\AreWeThereYet\Middleware;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Orrison\AreWeThereYet\Events\TaskedJobFinished;
 
 class TrackedMiddleware
 {
