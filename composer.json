@@ -1,6 +1,6 @@
 {
     "name": "orrison/laravel-are-we-there-yet",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "Track related jobs and fire a closure when they have all completed",
     "type": "library",
     "authors": [
