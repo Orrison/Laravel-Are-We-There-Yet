@@ -18,7 +18,6 @@ class TaskedMiddleware
     public function handle($job, $next)
     {
         if (isset($job->trackingId) && isset($job->goalId)) {
-            Log::info('Is Tracked');
             try {
                 $response = $next($job);
 
