@@ -5,7 +5,7 @@ use Illuminate\Support\Str;
 use Orrison\AreWeThereYet\Middleware\TaskedMiddleware;
 
 if (! function_exists('parallelDispatch')) {
-    function parallelDispatch($jobList, $uniqueGoalKey, $completionJob, $completionJobArgs)
+    function parallelDispatch($jobList, $uniqueGoalKey, $completionJob)
     {
         $tasks = [];
         foreach ($jobList as $rootKey => $possibleJob) {
@@ -38,7 +38,6 @@ if (! function_exists('parallelDispatch')) {
 
         Cache::tags(['awty'])->put($uniqueGoalKey, [
             'completionJob' => $completionJob,
-            'completionJobArgs' => $completionJobArgs,
             'tasks' => $tasks,
         ]);
 

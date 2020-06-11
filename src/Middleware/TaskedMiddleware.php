@@ -34,7 +34,7 @@ class TaskedMiddleware
                     }
 
                     if (empty($goalObject['tasks'])) {
-                        $goalObject['completionJob']::dispatch(...$goalObject['completionJobArgs']);
+                        dispatch($goalObject['completionJob']);
                         Cache::tags(['awty'])->forget($job->goalId);
                     } else {
                         Cache::tags(['awty'])->put($job->goalId, $goalObject);
