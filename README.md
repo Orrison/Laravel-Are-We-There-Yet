@@ -18,6 +18,10 @@ With the `parallelDispatch` helper method you can dispatch a list of jobs AND ch
     function parallelDispatch($jobList, $uniqueGoalKey, $completionJob, $completionJobArgs)
 ```
 
+## Setup:
+
+In order for a job to be run using `parallelDispatch` it MUST have the `Trackable` trait
+
 ## Examples:
 
 ### Running a list of jobs in parallel
