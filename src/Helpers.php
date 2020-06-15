@@ -10,12 +10,14 @@ if (! function_exists('parallelDispatch')) {
      *
      * @param  mixed $jobList An array of job objects you would like dispatched and tracked.
      * Adding a multidimensional array will dispatch the sub-array in a job chain in the order they are listed
-     * @param  string $uniqueGoalKey A unique key to track a particular goal instance
      * @param  string $completionJob A namespaced path to the job you would like run once all tracked jobs complete
      * @return void
      */
-    function parallelDispatch($jobList, $uniqueGoalKey, $completionJob)
+    function parallelDispatch($jobList, $completionJob)
     {
+        // Create a unique key to track this specific Goal Chain
+        $uniqueGoalKey = Str::random(20);
+
         $tasks = [];
         foreach ($jobList as $rootKey => $possibleJob) {
             // If the value is an array then it is a chained job. Set it up for that
