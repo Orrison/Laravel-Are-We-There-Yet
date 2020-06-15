@@ -15,7 +15,7 @@ if (! function_exists('parallelDispatch')) {
      * @param  array $completionJobArgs The arguments in order to be passed to the $completionJob
      * @return void
      */
-    function parallelDispatch($jobList, $uniqueGoalKey, $completionJob, $completionJobArgs)
+    function parallelDispatch($jobList, $uniqueGoalKey, $completionJob)
     {
         $tasks = [];
         foreach ($jobList as $rootKey => $possibleJob) {
@@ -48,7 +48,6 @@ if (! function_exists('parallelDispatch')) {
 
         Cache::tags(['awty'])->put($uniqueGoalKey, [
             'completionJob' => $completionJob,
-            'completionJobArgs' => $completionJobArgs,
             'tasks' => $tasks,
         ]);
 
