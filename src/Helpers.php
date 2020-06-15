@@ -19,6 +19,7 @@ if (! function_exists('parallelDispatch')) {
     {
         $tasks = [];
         foreach ($jobList as $rootKey => $possibleJob) {
+            // If the value is an array then it is a chained job. Set it up for that
             if (is_array($possibleJob)) {
                 foreach ($possibleJob as $subKey => $job) {
                     $uniqueTaskKey = $uniqueGoalKey . '-' . Str::random(10);
