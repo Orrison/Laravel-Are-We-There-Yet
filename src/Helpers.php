@@ -12,7 +12,6 @@ if (! function_exists('parallelDispatch')) {
      * Adding a multidimensional array will dispatch the sub-array in a job chain in the order they are listed
      * @param  string $uniqueGoalKey A unique key to track a particular goal instance
      * @param  string $completionJob A namespaced path to the job you would like run once all tracked jobs complete
-     * @param  array $completionJobArgs The arguments in order to be passed to the $completionJob
      * @return void
      */
     function parallelDispatch($jobList, $uniqueGoalKey, $completionJob)
