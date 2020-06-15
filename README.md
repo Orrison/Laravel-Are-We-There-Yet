@@ -8,14 +8,12 @@ With the `parallelDispatch` helper method you can dispatch a list of jobs AND ch
     /**
      * parallelDispatch
      *
-     * @param  mixed $jobList An array of job objects you would like dispatched and tracked.
+     * @param mixed $jobList An array of job objects you would like dispatched and tracked.
      * Adding a multidimensional array will dispatch the sub-array in a job chain in the order they are listed
-     * @param  string $uniqueGoalKey A unique key to track a particular goal instance
-     * @param  string $completionJob A namespaced path to the job you would like run once all tracked jobs complete
-     * @param  array $completionJobArgs The arguments in order to be passed to the $completionJob
+     * @param object $completionJob A fully instantiated class for the job to be run once all other jobs in the job list have completed.
      * @return void
      */
-    function parallelDispatch($jobList, $uniqueGoalKey, $completionJob, $completionJobArgs)
+    function parallelDispatch($jobList, $completionJob)
 ```
 
 ## Setup:
@@ -25,7 +23,7 @@ In order for a job to be run using `parallelDispatch` it MUST have the `Trackabl
 ## Examples:
 
 ### Running a list of jobs in parallel
-`SomeJobToBeRunAfter` will be run once they are all completed with the arguments `$completionjobArg` and `$completionjobArg` being passed into `SomeJobToBeRunAfter`.
+`SomeJobToBeRunAfter` will be run once they are all completed.
 ```php
     $uniqueGoalId = Str::random(15);
 
@@ -34,9 +32,7 @@ In order for a job to be run using `parallelDispatch` it MUST have the `Trackabl
             new JobOne(),
             new JobTwo($arg1, $arg2),
         ],
-        $uniqueGoalId,
-        'App\Jobs\SomeJobToBeRunAfter',
-        [$completionjobArg, $completionjobArg]
+        new SomeJobToBeRunAfter($someJobArg)
     );
 ```
 
@@ -54,9 +50,7 @@ Jobs in the chain can also be dispatch by including a sub array of job objects i
             ],
             new JobTwo($arg1, $arg2),
         ],
-        $uniqueGoalId,
-        'App\Jobs\SomeJobToBeRunAfter',
-        [$completionjobArg, $completionjobArg]
+        new SomeJobToBeRunAfter($someJobArg)
     );
 ```
-In the above example `JobOne`, `JobTwo`, and `chainedJobOne` will be dispatched immediatly. But `chainedJobTwo` and any others in that array will be chained to `chainedJobOne` and will only complete in the sequential order they are listed.
+In the above example `JobOne`, `JobTwo`, and `chainedJobOne` will be dispatched immediately. But `chainedJobTwo` and any others in that array will be chained to `chainedJobOne` and will only complete in the sequential order they are listed.

@@ -10,7 +10,7 @@ if (! function_exists('parallelDispatch')) {
      *
      * @param  mixed $jobList An array of job objects you would like dispatched and tracked.
      * Adding a multidimensional array will dispatch the sub-array in a job chain in the order they are listed
-     * @param  string $completionJob A namespaced path to the job you would like run once all tracked jobs complete
+     * @param object $completionJob A fully instantiated class for the job to be run once all other jobs in the job list have completed.
      * @return void
      */
     function parallelDispatch($jobList, $completionJob)
