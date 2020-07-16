@@ -18,6 +18,7 @@ With the `parallelDispatch` helper method you can dispatch a list of jobs AND ch
 
 ## Setup:
 
+A cache driver that supports tags is required. Redis is recommended.
 In order for a job to be run using `parallelDispatch` it MUST have the `Trackable` trait
 
 ## Examples:
