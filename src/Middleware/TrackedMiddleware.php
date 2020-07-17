@@ -20,16 +20,14 @@ class TrackedMiddleware
             try {
                 $response = $next($job);
 
-                // If the response is truthy, then we can assume
-                // the taskedJob has been completed.
-                if ($response) {
+                if ($this->wasSuccesful($job)) {
                     $goalObject = Cache::tags(['awty'])->get($job->goalId);
 
                     $pos = array_search($job->trackingId, $goalObject['tasks']);
                     if ($pos !== false) {
                         unset($goalObject['tasks'][$pos]);
                     } else {
-                        // Probably log this
+                        Log::warning($job->trackingId . ' not found');
                     }
 
                     if (empty($goalObject['tasks'])) {
@@ -45,5 +43,14 @@ class TrackedMiddleware
         } else {
             $next($job);
         }
+    }
+
+    /**
+     * @param $job
+     * @return bool
+     */
+    protected function wasSuccesful($job)
+    {
+        return !$job->job->hasFailed();
     }
 }
