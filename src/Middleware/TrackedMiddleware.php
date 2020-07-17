@@ -20,8 +20,8 @@ class TrackedMiddleware
             try {
                 $response = $next($job);
 
-                if ($this->wasSuccesful($job)) {
-                    $goalObject = Cache::tags(['awty'])->get($job->goalId);
+                if ($this->wasSuccessful($job)) {
+                    $goalObject = Cache::get($job->goalId);
 
                     $pos = array_search($job->trackingId, $goalObject['tasks']);
                     if ($pos !== false) {
@@ -32,9 +32,9 @@ class TrackedMiddleware
 
                     if (empty($goalObject['tasks'])) {
                         dispatch($goalObject['completionJob']);
-                        Cache::tags(['awty'])->forget($job->goalId);
+                        Cache::forget($job->goalId);
                     } else {
-                        Cache::tags(['awty'])->put($job->goalId, $goalObject);
+                        Cache::put($job->goalId, $goalObject, config('awty.expire', 2592000));
                     }
                 }
             } catch (\Throwable $e) {

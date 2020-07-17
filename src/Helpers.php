@@ -48,10 +48,10 @@ if (! function_exists('parallelDispatch')) {
             }
         }
 
-        Cache::tags(['awty'])->put($uniqueGoalKey, [
+        Cache::put($uniqueGoalKey, [
             'completionJob' => $completionJob,
             'tasks' => $tasks,
-        ]);
+        ], config('awty.expire', 2592000));
 
         foreach ($jobList as $rootKey => $possibleJob) {
             if (is_array($possibleJob)) {
