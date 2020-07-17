@@ -49,7 +49,7 @@ class TrackedMiddleware
      * @param $job
      * @return bool
      */
-    protected function wasSuccesful($job)
+    protected function wasSuccessful($job)
     {
         return !$job->job->hasFailed();
     }
