@@ -22,6 +22,11 @@ A cache driver is required, Redis is recommended.
 
 In order for a job to be run using `parallelDispatch` it MUST have the `Trackable` trait
 
+Data on tracked jobs and the job to be fired once they all complete is stored in the cache. By default these items will remain in the cache for 1 month. This cache expire time can be edited by publishing the config file and changing `expire`
+```shell script
+php artisan vendor:publish --tag=awty-config
+```
+
 ## Examples:
 
 ### Running a list of jobs in parallel
