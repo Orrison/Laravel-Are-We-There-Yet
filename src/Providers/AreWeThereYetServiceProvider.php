@@ -23,6 +23,8 @@ class AreWeThereYetServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->publishes([
+            __DIR__ . '/../config/awty.php' => config_path('awty.php'),
+        ]);
     }
 }
