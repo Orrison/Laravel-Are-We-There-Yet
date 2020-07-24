@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Orrison\AreWeThereYet\Middleware\TrackedMiddleware;
+use Orrison\AreWeThereYet\Models\AwtyGoal;
+use Orrison\AreWeThereYet\Models\AwtyTask;
 
 if (! function_exists('parallelDispatch')) {
     /**
@@ -18,13 +20,18 @@ if (! function_exists('parallelDispatch')) {
         // Create a unique key to track this specific Goal Chain
         $uniqueGoalKey = Str::random(20);
 
+        AwtyGoal::create([
+            'uniqueGoalKey' => $uniqueGoalKey,
+            'completionJob' => $completionJob,
+        ]);
+
         $tasks = [];
         foreach ($jobList as $rootKey => $possibleJob) {
             // If the value is an array then it is a chained job. Set it up for that
             if (is_array($possibleJob)) {
                 foreach ($possibleJob as $subKey => $job) {
                     $uniqueTaskKey = $uniqueGoalKey . '-' . Str::random(10);
-                    array_push($tasks, $uniqueTaskKey);
+
                     $jobList[$rootKey][$subKey]->trackingId = $uniqueTaskKey;
                     $jobList[$rootKey][$subKey]->goalId = $uniqueGoalKey;
                     
@@ -33,10 +40,16 @@ if (! function_exists('parallelDispatch')) {
                     } else {
                         $jobList[$rootKey][$subKey]->middleware = [new TrackedMiddleware()];
                     }
+
+                    AwtyTask::create([
+                        'uniqueGoalKey' => $uniqueGoalKey,
+                        'uniqueTaskKey' => $uniqueTaskKey,
+                        'job' => $jobList[$rootKey][$subKey],
+                    ]);
                 }
             } else {
                 $uniqueTaskKey = $uniqueGoalKey . '-' . Str::random(10);
-                array_push($tasks, $uniqueTaskKey);
+
                 $jobList[$rootKey]->trackingId = $uniqueTaskKey;
                 $jobList[$rootKey]->goalId = $uniqueGoalKey;
 
@@ -45,13 +58,14 @@ if (! function_exists('parallelDispatch')) {
                 } else {
                     $jobList[$rootKey]->middleware = [new TrackedMiddleware()];
                 }
+
+                AwtyTask::create([
+                    'uniqueGoalKey' => $uniqueGoalKey,
+                    'uniqueTaskKey' => $uniqueTaskKey,
+                    'job' => $jobList[$rootKey],
+                ]);
             }
         }
-
-        Cache::put($uniqueGoalKey, [
-            'completionJob' => $completionJob,
-            'tasks' => $tasks,
-        ], config('awty.expire', 2592000));
 
         foreach ($jobList as $rootKey => $possibleJob) {
             if (is_array($possibleJob)) {

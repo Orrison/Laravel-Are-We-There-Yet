@@ -4,6 +4,8 @@ namespace Orrison\AreWeThereYet\Middleware;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Orrison\AreWeThereYet\Models\AwtyGoal;
+use Orrison\AreWeThereYet\Models\AwtyTask;
 
 class TrackedMiddleware
 {
@@ -21,22 +23,24 @@ class TrackedMiddleware
                 $response = $next($job);
 
                 if ($this->wasSuccessful($job)) {
-                    $goalObject = Cache::get($job->goalId);
+                    $goal = AwtyGoal::where(['uniqueGoalKey', $job->goalId])->firstOrFail();
 
-                    $pos = array_search($job->trackingId, $goalObject['tasks']);
-                    if ($pos !== false) {
-                        unset($goalObject['tasks'][$pos]);
-                    } else {
-                        Log::warning($job->trackingId . ' not found');
-                    }
+                    $task = AwtyTask::where([
+                        'uniqueGoalKey' => $job->goalId,
+                        'uniqueTaskKey' => $job->trackingId
+                    ])->firstOrFail();
 
-                    if (config('awty.debug', false)) Log::debug(json_encode($goalObject));
+                    $task->update([
+                        'completed' => now(),
+                    ]);
 
-                    if (empty($goalObject['tasks'])) {
-                        dispatch($goalObject['completionJob']);
-                        Cache::forget($job->goalId);
-                    } else {
-                        Cache::put($job->goalId, $goalObject, config('awty.expire', 2592000));
+                    $remainingTasks = AwtyTask::where(['uniqueGoalKey' => $job->goalId])->whereNull('completed')->get();
+
+                    if (empty($remainingTasks)) {
+                        dispatch($goal->completionJob);
+                        $goal->update([
+                           'completed' => now(),
+                        ]);
                     }
                 }
                 return $response;

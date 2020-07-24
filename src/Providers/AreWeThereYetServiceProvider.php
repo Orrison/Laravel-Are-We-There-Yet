@@ -26,5 +26,7 @@ class AreWeThereYetServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/awty.php' => config_path('awty.php'),
         ], 'awty-config');
+
+        $this->loadMigrationsFrom(__DIR__.'/../Migrations');
     }
 }
