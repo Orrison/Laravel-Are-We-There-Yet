@@ -10,11 +10,11 @@ class AwtyGoal extends Model
 
     protected $guarded = ['id'];
 
-    public function getCompletionJob($value) {
+    public function getCompletionJobAttribute($value) {
         return unserialize($value);
     }
 
-    public function setCompletionJob($value) {
+    public function setCompletionJobAttribute($value) {
         $this->attributes['completionJob'] = serialize($value);
     }
 }

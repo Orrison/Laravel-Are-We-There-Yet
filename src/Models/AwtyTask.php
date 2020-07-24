@@ -10,11 +10,11 @@ class AwtyTask extends Model
 
     protected $guarded = ['id'];
 
-    public function getJob($value) {
+    public function getJobAttribute($value) {
         return unserialize($value);
     }
 
-    public function setJob($value) {
+    public function setJobAttribute($value) {
         $this->attributes['job'] = serialize($value);
     }
 }
