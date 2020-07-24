@@ -36,7 +36,7 @@ class TrackedMiddleware
 
                     $remainingTasks = AwtyTask::where(['uniqueGoalKey' => $job->goalId])->whereNull('completed')->get();
 
-                    if (empty($remainingTasks)) {
+                    if ($remainingTasks->isEmpty()) {
                         dispatch($goal->completionJob);
                         $goal->update([
                            'completed' => now(),
