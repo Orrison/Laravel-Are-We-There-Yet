@@ -18,29 +18,24 @@ class TrackedMiddleware
     public function handle($job, $next)
     {
         if (isset($job->trackingId) && isset($job->goalId)) {
-            try {
-                $response = $next($job);
+            $response = $next($job);
 
-                if ($this->wasSuccessful($job)) {
-                    $goalObject = Cache::get($job->goalId);
+            if ($this->wasSuccessful($job)) {
+                $goalObject = Cache::get($job->goalId);
 
-                    $pos = array_search($job->trackingId, $goalObject['tasks']);
-                    if ($pos !== false) {
-                        unset($goalObject['tasks'][$pos]);
-                    } else {
-                        Log::warning($job->trackingId . ' not found');
-                    }
-
-                    if (empty($goalObject['tasks'])) {
-                        dispatch($goalObject['completionJob']);
-                        Cache::forget($job->goalId);
-                    } else {
-                        Cache::put($job->goalId, $goalObject, config('awty.expire', 2592000));
-                    }
+                $pos = array_search($job->trackingId, $goalObject['tasks']);
+                if ($pos !== false) {
+                    unset($goalObject['tasks'][$pos]);
+                } else {
+                    Log::warning($job->trackingId . ' not found');
                 }
-            } catch (\Throwable $e) {
-                $job->fail($e);
-                throw $e;
+
+                if (empty($goalObject['tasks'])) {
+                    dispatch($goalObject['completionJob']);
+                    Cache::forget($job->goalId);
+                } else {
+                    Cache::put($job->goalId, $goalObject, config('awty.expire', 2592000));
+                }
             }
         } else {
             $next($job);
