@@ -1,6 +1,6 @@
 {
     "name": "orrison/laravel-are-we-there-yet",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "license": "GPL-3.0-or-later",
     "description": "Track related jobs and fire a closure when they have all completed",
     "type": "library",
