@@ -13,6 +13,7 @@ class TrackedMiddleware
      * @param mixed $job
      * @param callable $next
      * @return void
+     * @throws \Throwable
      */
     public function handle($job, $next)
     {
@@ -39,6 +40,7 @@ class TrackedMiddleware
                 }
             } catch (\Throwable $e) {
                 $job->fail($e);
+                throw $e;
             }
         } else {
             $next($job);
