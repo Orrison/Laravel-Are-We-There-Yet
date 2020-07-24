@@ -1,6 +1,6 @@
 {
     "name": "orrison/laravel-are-we-there-yet",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "license": "GPL-3.0-or-later",
     "description": "Track related jobs and fire a closure when they have all completed",
     "type": "library",
@@ -10,7 +10,9 @@
             "email": "ullyott.kevin@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "ext-json": "*"
+    },
     "autoload": {
         "files": [
             "src/Helpers.php"

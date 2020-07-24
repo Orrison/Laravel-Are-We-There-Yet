@@ -30,6 +30,8 @@ class TrackedMiddleware
                         Log::warning($job->trackingId . ' not found');
                     }
 
+                    if (config('awty.debug', false)) Log::debug(json_encode($goalObject));
+
                     if (empty($goalObject['tasks'])) {
                         dispatch($goalObject['completionJob']);
                         Cache::forget($job->goalId);
@@ -37,6 +39,7 @@ class TrackedMiddleware
                         Cache::put($job->goalId, $goalObject, config('awty.expire', 2592000));
                     }
                 }
+                return $response;
             } catch (\Throwable $e) {
                 $job->fail($e);
             }
