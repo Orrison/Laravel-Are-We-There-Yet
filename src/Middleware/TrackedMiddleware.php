@@ -23,7 +23,7 @@ class TrackedMiddleware
                 $response = $next($job);
 
                 if ($this->wasSuccessful($job)) {
-                    $goal = AwtyGoal::where(['uniqueGoalKey', $job->goalId])->firstOrFail();
+                    $goal = AwtyGoal::where(['uniqueGoalKey' => $job->goalId])->firstOrFail();
 
                     $task = AwtyTask::where([
                         'uniqueGoalKey' => $job->goalId,
