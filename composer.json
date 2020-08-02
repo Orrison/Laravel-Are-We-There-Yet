@@ -13,6 +13,9 @@
     "require": {
         "ext-json": "*"
     },
+    "require-dev": {
+        "orchestra/testbench": "^4.0"
+    },
     "autoload": {
         "files": [
             "src/Helpers.php"
