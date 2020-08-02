@@ -1,6 +1,6 @@
 # Are We There Yet?
 
-Easy to use helper method to dispatch a list of jobs and job chains that, upon completion of all of them, trigger one last final job. Often we dispatch jobs that can run in parallel but that once all complete require something else to be done. Now you can!
+Easy to use helper method to dispatch a list of jobs and job chains that, upon completion of all of them, trigger one last final job. Often we dispatch jobs that can run in parallel but that once all complete require something else to be done.
 
 With the `parallelDispatch` helper method you can dispatch a list of jobs AND chained jobs that will fire your defined "completion job" once they have all been completed successfully.
 
@@ -16,16 +16,22 @@ With the `parallelDispatch` helper method you can dispatch a list of jobs AND ch
     function parallelDispatch($jobList, $completionJob)
 ```
 
-## Setup:
+## Installation & Setup:
 
-A cache driver is required, Redis is recommended.
+Install via composer using the following command:
 
-In order for a job to be run using `parallelDispatch` it MUST have the `Trackable` trait
-
-Data on tracked jobs and the job to be fired once they all complete is stored in the cache. By default these items will remain in the cache for 1 month. This cache expire time can be edited by publishing the config file and changing `expire`
 ```shell script
-php artisan vendor:publish --tag=awty-config
+composer require orrison/laravel-are-we-there-yet
 ```
+
+Two tables are required for the tracking `awty_goals` and `awty_tasks`. They can be added by running a migration after installation.
+
+```shell script
+php artisan migrate
+```
+
+After the package and tables are setup you may now dispatch a cluster of jobs via `parallelDispatch` that once all completed will trigger the "completion job".
+All jobs included in the cluster MUST have the `Trackable` trait. The completion job does NOT require the trait.
 
 ## Examples:
 
