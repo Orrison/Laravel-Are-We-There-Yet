@@ -2,7 +2,12 @@
 
 namespace Orrison\AreWeThereYet\Tests\Feature;
 
+use Illuminate\Contracts\Queue\Job;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
+use Orrison\AreWeThereYet\Middleware\TrackedMiddleware;
 use Orrison\AreWeThereYet\Tests\Data\TestCompletionJob;
 use Orrison\AreWeThereYet\Tests\Data\TestJobOne;
 use Orrison\AreWeThereYet\Tests\Data\TestJobThree;
@@ -30,14 +35,14 @@ class ParallelDispatchTest extends TestCase
     {
         Queue::fake();
 
-        $goalId = parallelDispatch([
+        $dispatchData = parallelDispatch([
             new TestJobOne(),
             new TestJobTwo(),
             new TestJobThree(),
         ], new TestCompletionJob());
 
         $this->assertDatabaseHas('awty_goals', [
-            'uniqueGoalKey' => $goalId['goalId'],
+            'uniqueGoalKey' => $dispatchData['goalId'],
         ]);
     }
 
@@ -45,17 +50,28 @@ class ParallelDispatchTest extends TestCase
     {
         Queue::fake();
 
-        $goalId = parallelDispatch([
+        $dispatchData = parallelDispatch([
             new TestJobOne(),
             new TestJobTwo(),
             new TestJobThree(),
         ], new TestCompletionJob());
 
-        foreach ($goalId['taskKeys'] as $taskId) {
+        foreach ($dispatchData['taskKeys'] as $taskId) {
             $this->assertDatabaseHas('awty_tasks', [
-                'uniqueGoalKey' => $goalId['goalId'],
+                'uniqueGoalKey' => $dispatchData['goalId'],
                 'uniqueTaskKey' => $taskId,
             ]);
         }
+    }
+
+    public function testThatTheCompletionJobIsTriggeredIfAllJobsAreComplete()
+    {
+        $this->withMiddleware();
+
+        $dispatchData = parallelDispatch([
+            new TestJobOne(),
+            new TestJobTwo(),
+            new TestJobThree(),
+        ], new TestCompletionJob());
     }
 }
