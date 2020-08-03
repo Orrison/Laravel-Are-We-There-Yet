@@ -65,3 +65,9 @@ Jobs in the chain can also be dispatch by including a sub array of job objects i
 In the above example `JobOne`, `JobTwo`, and `chainedJobOne` will be dispatched immediately. But `chainedJobTwo` and any others in that array will be chained to `chainedJobOne` and will only complete in the sequential order they are listed.
 
 Based on Job Tracking from: https://github.com/rafter-platform/rafter
+
+### Testing
+
+``` bash
+composer test
+```
