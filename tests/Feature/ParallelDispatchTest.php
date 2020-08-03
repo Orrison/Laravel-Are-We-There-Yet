@@ -2,13 +2,8 @@
 
 namespace Orrison\AreWeThereYet\Tests\Feature;
 
-use Illuminate\Contracts\Queue\Job;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
-use Orrison\AreWeThereYet\Middleware\TrackedMiddleware;
-use Orrison\AreWeThereYet\Models\AwtyTask;
 use Orrison\AreWeThereYet\Tests\Data\TestCompletionJob;
 use Orrison\AreWeThereYet\Tests\Data\TestJobOne;
 use Orrison\AreWeThereYet\Tests\Data\TestJobThree;

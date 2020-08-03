@@ -27,10 +27,6 @@ class AreWeThereYetServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__ . '/../config/awty.php' => config_path('awty.php'),
-        ], 'awty-config');
-
         $this->loadMigrationsFrom(__DIR__.'/../Migrations');
 
         Queue::after(function (JobProcessed $event) {
