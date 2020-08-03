@@ -14,7 +14,7 @@ class CreateAwtyTasksTable extends Migration
     public function up()
     {
         Schema::create('awty_tasks', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('uniqueGoalKey');
             $table->string('uniqueTaskKey');
             $table->longText('job');

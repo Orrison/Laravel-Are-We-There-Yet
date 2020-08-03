@@ -14,7 +14,7 @@ class CreateAwtyGoalsTable extends Migration
     public function up()
     {
         Schema::create('awty_goals', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('uniqueGoalKey');
             $table->longText('completionJob');
             $table->timestamp('completed')->nullable();
