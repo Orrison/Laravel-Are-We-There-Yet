@@ -13,12 +13,13 @@ if (! function_exists('parallelDispatch')) {
      * @param  mixed $jobList An array of job objects you would like dispatched and tracked.
      * Adding a multidimensional array will dispatch the sub-array in a job chain in the order they are listed
      * @param object $completionJob A fully instantiated class for the job to be run once all other jobs in the job list have completed.
-     * @return void
+     * @return array
      */
     function parallelDispatch($jobList, $completionJob)
     {
         // Create a unique key to track this specific Goal Chain
         $uniqueGoalKey = Str::random(20);
+        $taskKeys = [];
 
         AwtyGoal::create([
             'uniqueGoalKey' => $uniqueGoalKey,
@@ -41,6 +42,8 @@ if (! function_exists('parallelDispatch')) {
                         $jobList[$rootKey][$subKey]->middleware = [new TrackedMiddleware()];
                     }
 
+                    $taskKeys[] = $uniqueTaskKey;
+
                     AwtyTask::create([
                         'uniqueGoalKey' => $uniqueGoalKey,
                         'uniqueTaskKey' => $uniqueTaskKey,
@@ -58,6 +61,8 @@ if (! function_exists('parallelDispatch')) {
                 } else {
                     $jobList[$rootKey]->middleware = [new TrackedMiddleware()];
                 }
+
+                $taskKeys[] = $uniqueTaskKey;
 
                 AwtyTask::create([
                     'uniqueGoalKey' => $uniqueGoalKey,
@@ -77,5 +82,10 @@ if (! function_exists('parallelDispatch')) {
                 dispatch($possibleJob);
             }
         }
+
+        return [
+            'goalId' => $uniqueGoalKey,
+            'taskKeys' => $taskKeys,
+        ];
     }
 }
