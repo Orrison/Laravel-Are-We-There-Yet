@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Orrison\AreWeThereYet\Middleware\TrackedMiddleware;
+use Orrison\AreWeThereYet\Models\AwtyTask;
 use Orrison\AreWeThereYet\Tests\Data\TestCompletionJob;
 use Orrison\AreWeThereYet\Tests\Data\TestJobOne;
 use Orrison\AreWeThereYet\Tests\Data\TestJobThree;
@@ -66,12 +67,14 @@ class ParallelDispatchTest extends TestCase
 
     public function testThatTheCompletionJobIsTriggeredIfAllJobsAreComplete()
     {
-        $this->withMiddleware();
+        // TODO: Somehow eventually test specifically if TestCompletionJob is dispatched. For now just test if it sets the cache value
 
         $dispatchData = parallelDispatch([
             new TestJobOne(),
             new TestJobTwo(),
             new TestJobThree(),
         ], new TestCompletionJob());
+
+        $this->assertEquals('asd', Cache::get('test'));
     }
 }

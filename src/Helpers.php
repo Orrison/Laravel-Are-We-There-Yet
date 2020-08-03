@@ -36,11 +36,11 @@ if (! function_exists('parallelDispatch')) {
                     $jobList[$rootKey][$subKey]->trackingId = $uniqueTaskKey;
                     $jobList[$rootKey][$subKey]->goalId = $uniqueGoalKey;
                     
-                    if (is_array($jobList[$rootKey][$subKey]->middleware)) {
-                        array_push($jobList[$rootKey][$subKey]->middleware, new TrackedMiddleware());
-                    } else {
-                        $jobList[$rootKey][$subKey]->middleware = [new TrackedMiddleware()];
-                    }
+//                    if (is_array($jobList[$rootKey][$subKey]->middleware)) {
+//                        array_push($jobList[$rootKey][$subKey]->middleware, new TrackedMiddleware());
+//                    } else {
+//                        $jobList[$rootKey][$subKey]->middleware = [new TrackedMiddleware()];
+//                    }
 
                     $taskKeys[] = $uniqueTaskKey;
 
@@ -56,11 +56,11 @@ if (! function_exists('parallelDispatch')) {
                 $jobList[$rootKey]->trackingId = $uniqueTaskKey;
                 $jobList[$rootKey]->goalId = $uniqueGoalKey;
 
-                if (is_array($jobList[$rootKey]->middleware)) {
-                    array_push($jobList[$rootKey]->middleware, new TrackedMiddleware());
-                } else {
-                    $jobList[$rootKey]->middleware = [new TrackedMiddleware()];
-                }
+//                if (is_array($jobList[$rootKey]->middleware)) {
+//                    array_push($jobList[$rootKey]->middleware, new TrackedMiddleware());
+//                } else {
+//                    $jobList[$rootKey]->middleware = [new TrackedMiddleware()];
+//                }
 
                 $taskKeys[] = $uniqueTaskKey;
 
