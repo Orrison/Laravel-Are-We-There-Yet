@@ -77,4 +77,6 @@ class ParallelDispatchTest extends TestCase
 
         $this->assertEquals('asd', Cache::get('test'));
     }
+
+    // TODO: Write tests for chained job dispatches
 }
