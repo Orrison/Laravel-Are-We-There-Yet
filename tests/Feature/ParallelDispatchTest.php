@@ -30,14 +30,32 @@ class ParallelDispatchTest extends TestCase
     {
         Queue::fake();
 
-        parallelDispatch([
+        $goalId = parallelDispatch([
             new TestJobOne(),
             new TestJobTwo(),
             new TestJobThree(),
         ], new TestCompletionJob());
 
         $this->assertDatabaseHas('awty_goals', [
-            'id' => 1,
+            'uniqueGoalKey' => $goalId['goalId'],
         ]);
+    }
+
+    public function testThatParallelDispatchStoresTheTasksInDatabase()
+    {
+        Queue::fake();
+
+        $goalId = parallelDispatch([
+            new TestJobOne(),
+            new TestJobTwo(),
+            new TestJobThree(),
+        ], new TestCompletionJob());
+
+        foreach ($goalId['taskKeys'] as $taskId) {
+            $this->assertDatabaseHas('awty_tasks', [
+                'uniqueGoalKey' => $goalId['goalId'],
+                'uniqueTaskKey' => $taskId,
+            ]);
+        }
     }
 }
