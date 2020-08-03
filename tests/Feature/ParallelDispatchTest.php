@@ -25,4 +25,19 @@ class ParallelDispatchTest extends TestCase
         Queue::assertPushed(TestJobTwo::class);
         Queue::assertPushed(TestJobThree::class);
     }
+
+    public function testThatParallelDispatchStoresAGoalInDatabase()
+    {
+        Queue::fake();
+
+        parallelDispatch([
+            new TestJobOne(),
+            new TestJobTwo(),
+            new TestJobThree(),
+        ], new TestCompletionJob());
+
+        $this->assertDatabaseHas('awty_goals', [
+            'id' => 1,
+        ]);
+    }
 }
